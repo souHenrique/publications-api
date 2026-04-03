@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT p FROM Post p WHERE p.user.id_user = :id_user AND p.archived = false")
+    @Query("SELECT p FROM Post p WHERE p.userId.idUser = :idUser AND p.archived = false")
     List<Post> findAllPublicPostsFromUser(
-            @Param("id_user") Long id_user
+            @Param("idUser") Long idUser
     );
 
-    @Query("SELECT c FROM Comment c WHERE c.post.user.id_user = :id_user AND c.post.archived = false")
+    @Query("SELECT c FROM Comment c WHERE c.postId.userId.idUser = :idUser AND c.postId.archived = false")
     List<Comment> findAllCommentOnPublicPostFromUser(
-            @Param("id_user") Long id_user
+            @Param("idUser") Long idUser
     );
 
 }

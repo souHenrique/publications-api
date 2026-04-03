@@ -17,25 +17,26 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Long id_comment;
+    @Column(updatable = false, name = "id_comment")
+    private Long idComment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Post post;
+    private Post postId;
 
     @Column(updatable = false, columnDefinition = "TEXT")
     private String message;
 
     @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime created_at;
+    @Column(updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 }

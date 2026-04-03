@@ -17,12 +17,12 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Long id_post;
+    @Column(updatable = false, name = "id_post")
+    private Long idPost;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
@@ -31,10 +31,11 @@ public class Post {
     private boolean archived;
 
     @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime created_at;
+    @Column(updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 }

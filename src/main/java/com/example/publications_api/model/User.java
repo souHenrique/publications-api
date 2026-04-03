@@ -18,8 +18,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Long id_user;
+    @Column(updatable = false, name = "id_user")
+    private Long idUser;
 
     @Column(nullable = false)
     private String username;
@@ -37,9 +37,10 @@ public class User {
     private String biography;
 
     @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime created_at;
+    @Column(updatable = false, name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
