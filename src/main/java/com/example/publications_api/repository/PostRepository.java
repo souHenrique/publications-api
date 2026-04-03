@@ -14,6 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT c FROM Comment c WHERE c.post.id_post = :id_post")
     List<Comment> findAllCommentsByPost(
-            @Param("postId") Long id_post
+            @Param("id_post") Long id_post
     );
 }
