@@ -1,13 +1,14 @@
 package com.example.publications_api.dto.comment;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record CommentRequestDTO(
 
-        @NotBlank(message = "O ID do usuário é obrigatório.")
+        @NotNull(message = "O ID do usuário é obrigatório.")
         Long userId,
 
-        @NotBlank(message = "O ID da publicação é obrigatório.")
+        @NotNull(message = "O ID da publicação é obrigatório.")
         Long postId,
 
         @NotBlank(message = "É obrigatório escrever um comentário.")

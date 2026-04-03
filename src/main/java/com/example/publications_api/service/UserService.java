@@ -2,9 +2,14 @@ package com.example.publications_api.service;
 
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
+import com.example.publications_api.model.Comment;
+import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
 import jakarta.transaction.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 public class UserService {
 
@@ -33,8 +38,8 @@ public class UserService {
         );
     }
 
-    public void findUserById(Long idUser) {
-        userRepository.findUserByIdUser(idUser);
+    public Optional<User> findUserById(Long idUser) {
+        return userRepository.findUserByIdUser(idUser);
     }
 
     @Transactional
@@ -56,4 +61,19 @@ public class UserService {
                 existingUser.getBiography()
         );
     }
+
+    public void deleteUser(Long idUser) {
+
+        User existingUser = userRepository.findUserByIdUser(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+        userRepository.delete(existingUser);
+    }
+
+    public List<Post> findAllPublicPostsFromUser(Long idUser) {
+        return userRepository.findAllPublicPostsFromUser(idUser);
+    }
+
+    public List<Comment> findAllCommentOnPublicPostFromUser(Long idUser) {
+        return userRepository.findAllCommentOnPublicPostFromUser(idUser);
+    };
 }
