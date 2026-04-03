@@ -10,7 +10,7 @@ public record UserRequestDTO(
         String username,
 
         @NotBlank(message = "O nome não pode estar vazio.")
-        String nome,
+        String name,
 
         @NotBlank(message = "O email não pode estar vazio.")
         @Email(message = "Digite um formato válido de email.")
