@@ -10,7 +10,6 @@ import com.example.publications_api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -41,13 +40,20 @@ public class PostService {
         );
     }
 
-    public Optional<Post> findPostById(Long idPost) {
-        return postRepository.findPostByIdPost(idPost);
+    public PostResponseDTO findPostById(Long idPost) {
+        return postRepository.findById(idPost)
+                .map(post -> new PostResponseDTO(
+                        post.getUserId().getUsername(),
+                        post.getText(),
+                        post.getCreatedAt(),
+                        post.getUpdatedAt()
+                ))
+                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
     }
 
     public PostResponseDTO updatePost(PostRequestDTO postRequestDTO, Long idPost, Long idUser) {
 
-        Post existingPost = postRepository.findPostByIdPost(idPost)
+        Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
 
         User existingUser = userRepository.findById(existingPost.getUserId().getIdUser())
@@ -64,19 +70,21 @@ public class PostService {
         );
     }
 
-    public void deletePost(Long idPost) {
+    public PostResponseDTO deletePost(Long idPost) {
 
-        Post existingPost = postRepository.findPostByIdPost(idPost)
+        Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
         postRepository.delete(existingPost);
+        return null;
     }
 
-    public void archivePost(Long idPost) {
+    public PostResponseDTO archivePost(Long idPost) {
 
-        Post existingPost = postRepository.findPostByIdPost(idPost)
+        Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
         existingPost.setArchived(true);
         postRepository.save(existingPost);
+        return null;
     }
 
     public List<Comment> findAllCommentsByPost(Long idPost) {

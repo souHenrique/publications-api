@@ -30,7 +30,7 @@ public class CommentService {
         User existingUser = userRepository.findById(commentRequestDTO.userId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
-        Post existingPost = postRepository.findPostByIdPost(commentRequestDTO.postId())
+        Post existingPost = postRepository.findById(commentRequestDTO.postId())
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
 
         comment.setUserId(existingUser);
