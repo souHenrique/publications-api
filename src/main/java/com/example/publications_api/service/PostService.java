@@ -27,7 +27,7 @@ public class PostService {
 
         Post post = new Post();
 
-        User existingUser = userRepository.findUserByIdUser(postRequestDTO.userId())
+        User existingUser = userRepository.findById(postRequestDTO.userId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         post.setUserId(existingUser);
@@ -50,7 +50,7 @@ public class PostService {
         Post existingPost = postRepository.findPostByIdPost(idPost)
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
 
-        User existingUser = userRepository.findUserByIdUser(existingPost.getUserId().getIdUser())
+        User existingUser = userRepository.findById(existingPost.getUserId().getIdUser())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         existingPost.setText(postRequestDTO.text());

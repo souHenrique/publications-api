@@ -14,8 +14,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findUserByIdUser(Long idUser);
-
     @Query("SELECT p FROM Post p WHERE p.userId.idUser = :idUser AND p.archived = false")
     List<Post> findAllPublicPostsFromUser(
             @Param("idUser") Long idUser

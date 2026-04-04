@@ -7,10 +7,11 @@ import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -31,7 +32,7 @@ public class UserService {
 
         String hashPassword = passwordEncoder.encode(userRequestDTO.password());
         user.setPassword(hashPassword);
-        
+
         user.setBiography(userRequestDTO.biography());
 
         User savedUser = userRepository.save(user);
@@ -44,13 +45,21 @@ public class UserService {
         );
     }
 
-    public Optional<User> findUserById(Long idUser) {
-        return userRepository.findUserByIdUser(idUser);
+    public UserResponseDTO findUserById(Long idUser) {
+
+        return userRepository.findById(idUser)
+                .map(user -> new UserResponseDTO(
+                        user.getUsername(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getBiography()
+                ))
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
     public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, Long idUser) {
 
-        User existingUser = userRepository.findUserByIdUser(idUser)
+        User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         existingUser.setUsername(userRequestDTO.username());
@@ -67,11 +76,12 @@ public class UserService {
         );
     }
 
-    public void deleteUser(Long idUser) {
+    public UserResponseDTO deleteUser(Long idUser) {
 
-        User existingUser = userRepository.findUserByIdUser(idUser)
+        User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         userRepository.delete(existingUser);
+        return null;
     }
 
     public List<Post> findAllPublicPostsFromUser(Long idUser) {
