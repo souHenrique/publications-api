@@ -6,24 +6,32 @@ import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.List;
 import java.util.Optional;
 
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    UserService (UserRepository userRepository) {
+    UserService (UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
 
         User user = new User();
+
         user.setUsername(userRequestDTO.username());
         user.setName(userRequestDTO.name());
         user.setEmail(userRequestDTO.email());
-        user.setPassword(userRequestDTO.password());
+
+        String hashPassword = passwordEncoder.encode(userRequestDTO.password());
+        user.setPassword(hashPassword);
+        
         user.setBiography(userRequestDTO.biography());
 
         User savedUser = userRepository.save(user);
