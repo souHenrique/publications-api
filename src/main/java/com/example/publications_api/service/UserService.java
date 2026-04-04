@@ -64,15 +64,19 @@ public class UserService {
 
         existingUser.setUsername(userRequestDTO.username());
         existingUser.setName(userRequestDTO.name());
-        existingUser.setEmail(userRequestDTO.email());
-        existingUser.setPassword(userRequestDTO.password());
+
+        String hashPassword = passwordEncoder.encode(userRequestDTO.password());
+        existingUser.setPassword(hashPassword);
+
         existingUser.setBiography(userRequestDTO.biography());
 
+        User savedUser = userRepository.save(existingUser);
+
         return new UserResponseDTO(
-                existingUser.getUsername(),
-                existingUser.getName(),
-                existingUser.getEmail(),
-                existingUser.getBiography()
+                savedUser.getUsername(),
+                savedUser.getName(),
+                savedUser.getEmail(),
+                savedUser.getBiography()
         );
     }
 

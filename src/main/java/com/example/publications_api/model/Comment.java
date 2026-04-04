@@ -28,7 +28,7 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post postId;
 
-    @Column(updatable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     @CreationTimestamp

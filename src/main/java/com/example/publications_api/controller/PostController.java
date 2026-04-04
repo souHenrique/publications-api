@@ -28,7 +28,7 @@ public class PostController {
         return ResponseEntity.ok(postResponseDTO);
     }
 
-    @PutMapping("/{idUser}")
+    @PutMapping("/{idPost}/{idUser}")
     public ResponseEntity<PostResponseDTO> updatePost(@RequestBody @Valid PostRequestDTO postRequestDTO, @PathVariable Long idPost, @PathVariable Long idUser) {
         PostResponseDTO postResponseDTO = postService.updatePost(postRequestDTO, idPost, idUser);
         return ResponseEntity.ok(postResponseDTO);

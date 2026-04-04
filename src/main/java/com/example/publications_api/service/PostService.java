@@ -32,11 +32,13 @@ public class PostService {
         post.setUserId(existingUser);
         post.setText(postRequestDTO.text());
 
+        Post savedPost = postRepository.save(post);
+
         return new PostResponseDTO(
                 existingUser.getUsername(),
-                post.getText(),
-                post.getCreatedAt(),
-                post.getUpdatedAt()
+                savedPost.getText(),
+                savedPost.getCreatedAt(),
+                savedPost.getUpdatedAt()
         );
     }
 
@@ -56,17 +58,19 @@ public class PostService {
         Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
 
-        User existingUser = userRepository.findById(existingPost.getUserId().getIdUser())
+        User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         existingPost.setText(postRequestDTO.text());
         postRepository.save(existingPost);
 
+        Post savedPost = postRepository.save(existingPost);
+
         return new PostResponseDTO(
                 existingUser.getUsername(),
-                existingPost.getText(),
-                existingPost.getCreatedAt(),
-                existingPost.getUpdatedAt()
+                savedPost.getText(),
+                savedPost.getCreatedAt(),
+                savedPost.getUpdatedAt()
         );
     }
 

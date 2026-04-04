@@ -37,11 +37,43 @@ public class CommentService {
         comment.setPostId(existingPost);
         comment.setMessage(commentRequestDTO.message());
 
+        Comment savedComment = commentRepository.save(comment);
+
         return new CommentResponseDTO(
                 existingUser.getUsername(),
-                comment.getMessage(),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt()
+                savedComment.getMessage(),
+                savedComment.getCreatedAt(),
+                savedComment.getUpdatedAt()
         );
+    }
+
+    public CommentResponseDTO updateComment(CommentRequestDTO commentRequestDTO, Long idComment, Long idPost, Long idUser) {
+
+        Comment existingComment = commentRepository.findById(idComment)
+                .orElseThrow(() -> new RuntimeException("Comentário não encontrado!"));
+
+        Post existingPost = postRepository.findById(idPost)
+                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
+
+        User existingUser = userRepository.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        existingComment.setMessage(commentRequestDTO.message());
+
+        Comment updatedComment = commentRepository.save(existingComment);
+
+        return new CommentResponseDTO(
+                existingUser.getUsername(),
+                updatedComment.getMessage(),
+                updatedComment.getCreatedAt(),
+                updatedComment.getUpdatedAt()
+        );
+    }
+
+    public CommentResponseDTO deleteComment(Long idComment) {
+        Comment existingComment = commentRepository.findCommentByIdComment(idComment)
+                .orElseThrow(() -> new RuntimeException("Comentário não encontrado!"));
+        commentRepository.delete(existingComment);
+        return null;
     }
 }
