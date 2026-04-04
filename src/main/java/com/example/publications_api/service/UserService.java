@@ -1,9 +1,9 @@
 package com.example.publications_api.service;
 
+import com.example.publications_api.dto.comment.CommentResponseDTO;
+import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
-import com.example.publications_api.model.Comment;
-import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,11 +88,11 @@ public class UserService {
         return null;
     }
 
-    public List<Post> findAllPublicPostsFromUser(Long idUser) {
+    public List<PostResponseDTO> findAllPublicPostsFromUser(Long idUser) {
         return userRepository.findAllPublicPostsFromUser(idUser);
     }
 
-    public List<Comment> findAllCommentOnPublicPostFromUser(Long idUser) {
+    public List<CommentResponseDTO> findAllCommentOnPublicPostFromUser(Long idUser) {
         return userRepository.findAllCommentOnPublicPostFromUser(idUser);
     };
 }

@@ -1,12 +1,19 @@
 package com.example.publications_api.controller;
 
+import com.example.publications_api.dto.comment.CommentResponseDTO;
+import com.example.publications_api.dto.post.PostRequestDTO;
+import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
+import com.example.publications_api.model.Comment;
+import com.example.publications_api.model.Post;
 import com.example.publications_api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -39,5 +46,15 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    //depois pesquisar como fazer para listar os usuários com os parâmetros
+    @GetMapping("/{idUser}")
+    public ResponseEntity<List<PostResponseDTO>> findAllPublicPostsByUser(@PathVariable Long idUser) {
+        List<PostResponseDTO> userResponseDTOList = userService.findAllPublicPostsFromUser(idUser);
+        return ResponseEntity.ok(userResponseDTOList);
+    }
+
+    @GetMapping("/{idComment}")
+    public ResponseEntity<List<CommentResponseDTO>> findAllCommentsOnPublicPostsByUser(@PathVariable Long idUser) {
+        List<CommentResponseDTO> userResponseDTOList = userService.findAllCommentOnPublicPostFromUser(idUser);
+        return ResponseEntity.ok(userResponseDTOList);
+    }
 }

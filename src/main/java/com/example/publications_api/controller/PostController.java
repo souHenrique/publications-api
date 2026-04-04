@@ -1,13 +1,17 @@
 package com.example.publications_api.controller;
 
+import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
+import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import com.example.publications_api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -46,5 +50,9 @@ public class PostController {
         return ResponseEntity.ok(postResponseDTO);
     }
 
-    //depois pesquisar como fazer para listar os posts com os parâmetros
+    @GetMapping("/{idPost}")
+    public ResponseEntity<List<CommentResponseDTO>> findAllCommentsByPost(@PathVariable Long idPost) {
+        List<CommentResponseDTO> postResponseDTOList = postService.findAllCommentsByPost(idPost);
+        return ResponseEntity.ok(postResponseDTOList);
+    }
 }

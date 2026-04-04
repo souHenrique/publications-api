@@ -32,5 +32,4 @@ public class CommentController {
         return ResponseEntity.ok(commentResponseDTO);
     }
 
-     //depois pesquisar como fazer para listar os comentários com os parâmetros
 }

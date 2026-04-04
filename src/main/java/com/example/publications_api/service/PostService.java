@@ -1,5 +1,6 @@
 package com.example.publications_api.service;
 
+import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.model.Comment;
@@ -91,8 +92,7 @@ public class PostService {
         return null;
     }
 
-    public List<Comment> findAllCommentsByPost(Long idPost) {
+    public List<CommentResponseDTO> findAllCommentsByPost(Long idPost) {
         return postRepository.findAllCommentsByPost(idPost);
     }
-
 }

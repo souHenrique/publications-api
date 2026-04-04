@@ -1,5 +1,6 @@
 package com.example.publications_api.repository;
 
+import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT c FROM Comment c WHERE c.postId.idPost = :idPost")
-    List<Comment> findAllCommentsByPost(
+    List<CommentResponseDTO> findAllCommentsByPost(
             @Param("idPost") Long idPost
     );
 }
