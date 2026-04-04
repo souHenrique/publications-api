@@ -7,7 +7,6 @@ import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
 import jakarta.transaction.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,6 @@ public class UserService {
         return userRepository.findUserByIdUser(idUser);
     }
 
-    @Transactional
     public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, Long idUser) {
 
         User existingUser = userRepository.findUserByIdUser(idUser)

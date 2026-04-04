@@ -20,6 +20,6 @@ public record UserRequestDTO(
         @Size(min = 6, message = "A senha deve conter no mínimo 6 caracteres.")
         String password,
 
-        @Size(max = 500, message = "Biografia não pode exceder 500 caracteres.")
+        @Size(min = 1, max = 500, message = "Biografia não pode exceder 500 caracteres.")
         String biography) {
 }
