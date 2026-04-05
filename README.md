@@ -92,7 +92,6 @@ Request body:
 Response `201 Created`:
 ```json
 {
-    "id": 1,
     "username": "joaosilva",
     "name": "João Silva",
     "email": "joao@email.com",
