@@ -46,13 +46,13 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    @GetMapping("/{idUser}")
+    @GetMapping("/{idUser}/posts")
     public ResponseEntity<List<PostResponseDTO>> findAllPublicPostsByUser(@PathVariable Long idUser) {
         List<PostResponseDTO> userResponseDTOList = userService.findAllPublicPostsFromUser(idUser);
         return ResponseEntity.ok(userResponseDTOList);
     }
 
-    @GetMapping("/{idComment}")
+    @GetMapping("/{idUser}/comments")
     public ResponseEntity<List<CommentResponseDTO>> findAllCommentsOnPublicPostsByUser(@PathVariable Long idUser) {
         List<CommentResponseDTO> userResponseDTOList = userService.findAllCommentOnPublicPostFromUser(idUser);
         return ResponseEntity.ok(userResponseDTOList);

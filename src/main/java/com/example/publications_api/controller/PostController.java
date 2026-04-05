@@ -50,7 +50,7 @@ public class PostController {
         return ResponseEntity.ok(postResponseDTO);
     }
 
-    @GetMapping("/{idPost}")
+    @GetMapping("/{idPost}/comments")
     public ResponseEntity<List<CommentResponseDTO>> findAllCommentsByPost(@PathVariable Long idPost) {
         List<CommentResponseDTO> postResponseDTOList = postService.findAllCommentsByPost(idPost);
         return ResponseEntity.ok(postResponseDTOList);
