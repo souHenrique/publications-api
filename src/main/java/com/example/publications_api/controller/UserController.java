@@ -1,12 +1,9 @@
 package com.example.publications_api.controller;
 
 import com.example.publications_api.dto.comment.CommentResponseDTO;
-import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
-import com.example.publications_api.model.Comment;
-import com.example.publications_api.model.Post;
 import com.example.publications_api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +50,8 @@ public class UserController {
     }
 
     @GetMapping("/{idUser}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> findAllCommentsOnPublicPostsByUser(@PathVariable Long idUser) {
-        List<CommentResponseDTO> userResponseDTOList = userService.findAllCommentOnPublicPostFromUser(idUser);
+    public ResponseEntity<List<CommentResponseDTO>> findAllCommentsByUserOnPublicPosts(@PathVariable Long idUser) {
+        List<CommentResponseDTO> userResponseDTOList = userService.findAllCommentByUserOnPublicPosts(idUser);
         return ResponseEntity.ok(userResponseDTOList);
     }
 }

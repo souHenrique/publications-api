@@ -14,7 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
         SELECT new com.example.publications_api.dto.comment.CommentResponseDTO(
-                c.userId.username, c.message, c.createdAt, c.updatedAt
+                c.idComment, c.postId.idPost, c.userId.username, c.message, c.createdAt, c.updatedAt
                 )
                         FROM Comment c
                                 WHERE c.postId.idPost = :idPost""")

@@ -9,20 +9,16 @@ import com.example.publications_api.model.User;
 import com.example.publications_api.repository.CommentRepository;
 import com.example.publications_api.repository.PostRepository;
 import com.example.publications_api.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
     public final CommentRepository commentRepository;
     public final UserRepository userRepository;
     public final PostRepository postRepository;
-
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository) {
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-    }
 
     public CommentResponseDTO createComment(CommentRequestDTO commentRequestDTO) {
 
@@ -41,7 +37,9 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
 
         return new CommentResponseDTO(
-                existingUser.getUsername(),
+                savedComment.getIdComment(),
+                savedComment.getPostId().getIdPost(),
+                savedComment.getUserId().getUsername(),
                 savedComment.getMessage(),
                 savedComment.getCreatedAt(),
                 savedComment.getUpdatedAt()
@@ -64,6 +62,8 @@ public class CommentService {
         Comment updatedComment = commentRepository.save(existingComment);
 
         return new CommentResponseDTO(
+                existingComment.getIdComment(),
+                existingPost.getIdPost(),
                 existingUser.getUsername(),
                 updatedComment.getMessage(),
                 updatedComment.getCreatedAt(),

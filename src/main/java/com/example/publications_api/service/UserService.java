@@ -7,21 +7,18 @@ import com.example.publications_api.dto.user.UserResponseDTO;
 import com.example.publications_api.exceptions.ResourceNotFoundException;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    UserService (UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
 
@@ -93,7 +90,9 @@ public class UserService {
         return userRepository.findAllPublicPostsFromUser(idUser);
     }
 
-    public List<CommentResponseDTO> findAllCommentOnPublicPostFromUser(Long idUser) {
-        return userRepository.findAllCommentOnPublicPostFromUser(idUser);
+    public List<CommentResponseDTO> findAllCommentByUserOnPublicPosts(Long idUser) {
+        userRepository.findById(idUser)
+                .orElseThrow(() -> new ResourceNotFoundException(("Usuário não encontrado!")));
+        return userRepository.findAllCommentByUserOnPublicPosts(idUser);
     };
 }

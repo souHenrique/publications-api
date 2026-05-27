@@ -15,7 +15,9 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
-        SELECT new com.example.publications_api.dto.post.PostResponseDTO(p.userId.username, p.text, p.createdAt, p.updatedAt)
+        SELECT new com.example.publications_api.dto.post.PostResponseDTO(
+            p.userId.username, p.text, p.createdAt, p.updatedAt
+        )
         FROM Post p
         WHERE p.userId.idUser = :idUser
         AND p.archived = false
@@ -25,11 +27,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     );
 
     @Query("""
-        SELECT new com.example.publications_api.dto.comment.CommentResponseDTO(c.userId.username, c.message, c.createdAt, c.updatedAt)
+        SELECT new com.example.publications_api.dto.comment.CommentResponseDTO(
+            c.idComment, c.postId.idPost, c.userId.username, c.message, c.createdAt, c.updatedAt
+        )
         FROM Comment c
         WHERE c.userId.idUser = :idUser AND c.postId.archived = false
     """)
-    List<CommentResponseDTO> findAllCommentOnPublicPostFromUser(
+    List<CommentResponseDTO> findAllCommentByUserOnPublicPosts(
             @Param("idUser") Long idUser
     );
 
