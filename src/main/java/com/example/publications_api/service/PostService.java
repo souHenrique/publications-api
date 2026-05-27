@@ -3,6 +3,7 @@ package com.example.publications_api.service;
 import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
+import com.example.publications_api.exceptions.ResourceNotFoundException;
 import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
@@ -28,7 +29,7 @@ public class PostService {
         Post post = new Post();
 
         User existingUser = userRepository.findById(postRequestDTO.userId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
         post.setUserId(existingUser);
         post.setText(postRequestDTO.text());
@@ -51,16 +52,16 @@ public class PostService {
                         post.getCreatedAt(),
                         post.getUpdatedAt()
                 ))
-                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
     }
 
     public PostResponseDTO updatePost(PostRequestDTO postRequestDTO, Long idPost, Long idUser) {
 
         Post existingPost = postRepository.findById(idPost)
-                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
 
         User existingUser = userRepository.findById(idUser)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
         existingPost.setText(postRequestDTO.text());
         postRepository.save(existingPost);
@@ -78,7 +79,7 @@ public class PostService {
     public PostResponseDTO deletePost(Long idPost) {
 
         Post existingPost = postRepository.findById(idPost)
-                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
         postRepository.delete(existingPost);
         return null;
     }
@@ -86,7 +87,7 @@ public class PostService {
     public PostResponseDTO archivePost(Long idPost) {
 
         Post existingPost = postRepository.findById(idPost)
-                .orElseThrow(() -> new RuntimeException("Publicação não encontrada!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
         existingPost.setArchived(true);
         postRepository.save(existingPost);
         return null;

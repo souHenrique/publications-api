@@ -4,6 +4,7 @@ import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
+import com.example.publications_api.exceptions.ResourceNotFoundException;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,13 +55,13 @@ public class UserService {
                         user.getEmail(),
                         user.getBiography()
                 ))
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
     }
 
     public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, Long idUser) {
 
         User existingUser = userRepository.findById(idUser)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
         existingUser.setUsername(userRequestDTO.username());
         existingUser.setName(userRequestDTO.name());
@@ -83,7 +84,7 @@ public class UserService {
     public UserResponseDTO deleteUser(Long idUser) {
 
         User existingUser = userRepository.findById(idUser)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
         userRepository.delete(existingUser);
         return null;
     }
