@@ -2,6 +2,7 @@ package com.example.publications_api.exceptions;
 
 import com.example.publications_api.dto.error.ErrorResponseDTO;
 import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -46,6 +47,27 @@ public class GlobalControllerAdvice {
                 status.value(),
                 status.getReasonPhrase(),
                 ex.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidation(MethodArgumentNotValidException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .findFirst()
+                .orElse("Dados inválidos");
+
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                status.value(),
+                status.getReasonPhrase(),
+                message,
                 LocalDateTime.now()
         );
 

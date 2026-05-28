@@ -3,8 +3,6 @@ package com.example.publications_api.controller;
 import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
-import com.example.publications_api.model.Comment;
-import com.example.publications_api.model.Post;
 import com.example.publications_api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO) {
+    public ResponseEntity<PostResponseDTO> createPost(@RequestBody @Valid PostRequestDTO postRequestDTO) {
         PostResponseDTO postResponseDTO = postService.createPost(postRequestDTO);
         return ResponseEntity.status(201).body(postResponseDTO);
     }
