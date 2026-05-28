@@ -4,6 +4,7 @@ import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostRequestDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.exceptions.ResourceNotFoundException;
+import com.example.publications_api.exceptions.UnauthorizedException;
 import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
@@ -63,6 +64,10 @@ public class PostService {
         User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
+        if (!existingPost.getUserId().getIdUser().equals(idUser)) {
+            throw new UnauthorizedException("Você não tem permissão para editar esta publicação.");
+        }
+
         existingPost.setText(postRequestDTO.text());
         postRepository.save(existingPost);
 
@@ -76,18 +81,34 @@ public class PostService {
         );
     }
 
-    public PostResponseDTO deletePost(Long idPost) {
+    public PostResponseDTO deletePost(Long idPost, Long idUser) {
 
         Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
+
+        User existingUser = userRepository.findById(idUser)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
+        if (!existingPost.getUserId().getIdUser().equals(idUser)) {
+            throw new UnauthorizedException("Você não tem permissão para deletar esta publicação.");
+        }
+
         postRepository.delete(existingPost);
         return null;
     }
 
-    public PostResponseDTO archivePost(Long idPost) {
+    public PostResponseDTO archivePost(Long idPost, Long idUser) {
 
         Post existingPost = postRepository.findById(idPost)
                 .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada!"));
+
+        User existingUser = userRepository.findById(idUser)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+
+        if (!existingPost.getUserId().getIdUser().equals(idUser)) {
+            throw new UnauthorizedException("Você não tem permissão para arquivar esta publicação.");
+        }
+
         existingPost.setArchived(true);
         postRepository.save(existingPost);
         return null;

@@ -2,7 +2,9 @@ package com.example.publications_api.service;
 
 import com.example.publications_api.dto.comment.CommentRequestDTO;
 import com.example.publications_api.dto.comment.CommentResponseDTO;
+import com.example.publications_api.exceptions.BusinessException;
 import com.example.publications_api.exceptions.ResourceNotFoundException;
+import com.example.publications_api.exceptions.UnauthorizedException;
 import com.example.publications_api.model.Comment;
 import com.example.publications_api.model.Post;
 import com.example.publications_api.model.User;
@@ -57,6 +59,14 @@ public class CommentService {
         User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
+        if (!existingComment.getUserId().getIdUser().equals(idUser)) {
+            throw new UnauthorizedException("Você não tem permissão para editar este comentário.");
+        }
+
+        if (!existingComment.getPostId().getIdPost().equals(idPost)) {
+            throw new BusinessException("O comentário não pertence à publicação informada.");
+        }
+
         existingComment.setMessage(commentRequestDTO.message());
 
         Comment updatedComment = commentRepository.save(existingComment);
@@ -71,9 +81,17 @@ public class CommentService {
         );
     }
 
-    public CommentResponseDTO deleteComment(Long idComment) {
+    public CommentResponseDTO deleteComment(Long idComment, Long idUser) {
         Comment existingComment = commentRepository.findCommentByIdComment(idComment)
                 .orElseThrow(() -> new ResourceNotFoundException("Comentário não encontrado!"));
+
+        User existingUser = userRepository.findById(idUser)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+
+        if (!existingComment.getUserId().getIdUser().equals(idUser)) {
+            throw new UnauthorizedException("Você não tem permissão para apagar este comentário.");
+        }
+
         commentRepository.delete(existingComment);
         return null;
     }

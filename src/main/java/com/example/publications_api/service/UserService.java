@@ -4,6 +4,7 @@ import com.example.publications_api.dto.comment.CommentResponseDTO;
 import com.example.publications_api.dto.post.PostResponseDTO;
 import com.example.publications_api.dto.user.UserRequestDTO;
 import com.example.publications_api.dto.user.UserResponseDTO;
+import com.example.publications_api.exceptions.BusinessException;
 import com.example.publications_api.exceptions.ResourceNotFoundException;
 import com.example.publications_api.model.User;
 import com.example.publications_api.repository.UserRepository;
@@ -21,6 +22,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.existsByUsername(userRequestDTO.username())) {
+            throw new BusinessException("Username já está em uso!");
+        }
+
+        if (userRepository.existsByEmail(userRequestDTO.email())) {
+            throw new BusinessException("Email já está em uso!");
+        }
 
         User user = new User();
 
@@ -60,8 +69,23 @@ public class UserService {
         User existingUser = userRepository.findById(idUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
 
+        userRepository.findByEmail(userRequestDTO.email())
+                        .ifPresent(user -> {
+                            if (!user.getIdUser().equals(idUser)) {
+                                throw new BusinessException("Email já está em uso!");
+                            }
+                        });
+
+        userRepository.findByUsername(userRequestDTO.username())
+                .ifPresent(user -> {
+                    if (!user.getIdUser().equals(idUser)) {
+                        throw new BusinessException("Username já está em uso!");
+                    }
+                });
+
         existingUser.setUsername(userRequestDTO.username());
         existingUser.setName(userRequestDTO.name());
+        existingUser.setEmail(userRequestDTO.email());
 
         String hashPassword = passwordEncoder.encode(userRequestDTO.password());
         existingUser.setPassword(hashPassword);

@@ -36,15 +36,15 @@ public class PostController {
         return ResponseEntity.ok(postResponseDTO);
     }
 
-    @DeleteMapping("/{idPost}")
-    public ResponseEntity<PostResponseDTO> deletePost(@PathVariable Long idPost) {
-        PostResponseDTO postResponseDTO = postService.deletePost(idPost);
+    @DeleteMapping("/{idPost}/{idUser}")
+    public ResponseEntity<PostResponseDTO> deletePost(@PathVariable Long idPost, @PathVariable Long idUser) {
+        PostResponseDTO postResponseDTO = postService.deletePost(idPost, idUser);
         return ResponseEntity.ok(postResponseDTO);
     }
 
-    @PatchMapping("/{idPost}")
-    public ResponseEntity<PostResponseDTO> archivePost(@PathVariable Long idPost) {
-        PostResponseDTO postResponseDTO = postService.archivePost(idPost);
+    @PatchMapping("/{idPost}/{idUser}")
+    public ResponseEntity<PostResponseDTO> archivePost(@PathVariable Long idPost, @PathVariable Long idUser) {
+        PostResponseDTO postResponseDTO = postService.archivePost(idPost, idUser);
         return ResponseEntity.ok(postResponseDTO);
     }
 
