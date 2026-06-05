@@ -25,6 +25,9 @@ Esta API foi construída com Java e Spring Boot e permite:
 - Hibernate / JPA
 - Maven Wrapper
 - Lombok
+- SpringDoc OpenAPI / Swagger
+- Docker
+- Docker Compose
 
 ## Estrutura do projeto
 
@@ -117,9 +120,13 @@ CREATE DATABASE publications_db;
 O projeto usa estas variáveis:
 
 ```properties
-DB_URL=jdbc:postgresql://localhost:5432/publications_db
-DB_USERNAME=postgres
-DB_PASSWORD=sua_senha
+POSTGRES_DB=${POSTGRES_DB}
+POSTGRES_USER=${POSTGRES_USER}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+DB_URL=${DB_URL}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
 ```
 
 ## Como executar o projeto
@@ -165,6 +172,34 @@ A API será iniciada por padrão em:
 http://localhost:8080
 ```
 
+## Como executar com Docker
+
+### 1. Criar o arquivo `.env`
+
+Na raiz do projeto, crie um arquivo `.env` com as variáveis:
+
+```properties
+POSTGRES_DB=${POSTGRES_DB}
+POSTGRES_USER=${POSTGRES_USER}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+DB_URL=${DB_URL}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+```
+
+### 2. Subir banco e aplicação com Docker Compose
+
+```powershell
+docker compose up --build
+```
+
+### Observação importante
+
+Quando a aplicação roda dentro do Docker Compose, o host do banco deve ser `postgres`, por isso o `DB_URL` usado no `.env` é:
+
+Quando a aplicação roda localmente pela IDE, o host do banco deve ser `localhost`.
+
 ## Configurações da aplicação
 
 Arquivo: `src/main/resources/application.properties`
@@ -177,6 +212,15 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.format_sql=true
+springdoc.swagger-ui.path=/swagger-ui.html
+```
+
+## Documentação Swagger
+
+Com a aplicação em execução, a documentação interativa pode ser acessada em:
+
+```text
+http://localhost:8080/swagger-ui.html
 ```
 
 ## Comportamento de segurança
@@ -341,4 +385,3 @@ http://localhost:8080
 8. Listar comentários do usuário em posts públicos
 9. Testar validação com body inválido
 10. Testar regra de posse com `idUser` incorreto
-
